@@ -1,6 +1,188 @@
 <!DOCTYPE html>
 <html>
-<body>
-<p>Hello world!</p>
-</body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script>
+		function openTab(evt, contentGroup, tabGroup, tabLabel) {
+            var i, tabcontent, tabs;
+            // get all tabs
+            tabcontent = document.getElementsByClassName(contentGroup);
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+		  
+            var newIndex, oldIndex = 0;
+            tabs = document.getElementsByClassName(tabGroup);
+            oldIndex = getActiveTabIndex(tabs);
+            for (i = 0; i < tabs.length; i++) {
+                tabs[i].className = tabs[i].className.replace(" activeTab", "");
+            }
+		  
+            document.getElementById(tabLabel).style.display = "block";
+            evt.currentTarget.className += " activeTab";
+		  
+            newIndex = getActiveTabIndex(tabs);
+		  
+            startSelectRectangleAnimation(newIndex, oldIndex, tabs);
+		}
+		
+		function getActiveTabIndex(tabs){
+            var index;
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].className.includes("activeTab")){
+                    index = i;
+                    break;
+                }
+            }
+		  
+            if (index == undefined){
+                index = 0;
+            }
+            return index;
+		}
+		
+		function startSelectRectangleAnimation(newIndex, oldIndex, tabs){
+            var id;
+            var lerpSpeed = 20*(Math.max(1, Math.abs(newIndex-oldIndex) - 1));                
+            var tabContainer = tabs[0].parentElement;
+            var rectangle = tabContainer.lastElementChild;
+            
+            var destx1 = tabs[newIndex].offsetLeft - tabContainer.offsetLeft; // left
+            var destx2 = destx1 + tabs[newIndex].offsetWidth; // right
+            
+            var sourcex1 = tabs[oldIndex].offsetLeft - tabContainer.offsetLeft;
+            var sourcex2 = sourcex1 + tabs[oldIndex].offsetWidth;
+            
+            if (rectangle.className.includes("transitioning")){
+                var _ = setTimeout(startSelectRectangleAnimation, 200, newIndex, oldIndex, tabs);
+            }
+            else{
+                rectangle.className += " transitioning";
+                id = setInterval(frame, 10);
+            }
+            
+            function frame(){
+                if (sourcex1 == destx1 && sourcex2 == destx2){
+                    rectangle.className = rectangle.className.replace(" transitioning", "");
+                    clearInterval(id);
+                }
+                else if (newIndex < oldIndex){
+                    if (sourcex1 != destx1){
+                        sourcex1 = Math.max(destx1, sourcex1 -= lerpSpeed);
+                    }
+                    else
+                    {
+                        sourcex2 = Math.max(destx2, sourcex2 -= lerpSpeed);
+                    }
+                }
+                else {
+                    if (sourcex2 != destx2){
+                        sourcex2 = Math.min(destx2, sourcex2 += lerpSpeed);
+                    }
+                    else
+                    {
+                        sourcex1 = Math.min(destx1, sourcex1 += lerpSpeed);
+                    }
+                }
+                
+                rectangle.style.marginLeft = sourcex1 + 'px';
+                rectangle.style.width = sourcex2-sourcex1 + 'px';
+            }
+		}
+		
+		function onFinishedLoad(){
+			// Get the element with id="defaultOpen" and click on it
+			var defaultTabs = document.getElementsByClassName("defaultTab");
+			for (var i = 0; i < defaultTabs.length; i++) {
+				defaultTabs[i].click();
+			}
+		}
+	</script>
+	<head>
+        <link href="style.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+        <header>
+            <div id="headerOverlay" >
+                <div id="headerText">
+                    <p>Chase Jones</p>
+                </div>
+            </div>
+        </header>
+
+        <div id="content">
+            <div class="primaryTabContainer">
+                
+                <div class="spacer" ></div>
+                
+                <button class="primaryTabs defaultTab" 
+                        onclick="openTab(event, 'primaryTabContent', 'primaryTabs', 'tab1')">
+                    Home
+                </button>
+                
+                <div class="spacer" ></div>
+                
+                <button class="primaryTabs" 
+                        onclick="openTab(event, 'primaryTabContent', 'primaryTabs', 'tab2')">
+                    Demos
+                </button>
+                
+                <div class="spacer" ></div>
+                
+                <button class="primaryTabs" 
+                        onclick="openTab(event, 'primaryTabContent', 'primaryTabs', 'tab3')">
+                    Gallery
+                </button>
+                
+                <div class="spacer" ></div>
+                
+                <button class="primaryTabs" 
+                        onclick="openTab(event, 'primaryTabContent', 'primaryTabs', 'tab4')">
+                    Contact Me
+                </button>
+                
+                <div class="rectangle"></div>
+            </div>
+            
+            <hr class="primaryTabHR"/>
+
+            <div id="tab1" class="tabcontent primaryTabContent">
+                <div id="pictures" style="width: 300px; text-align: center; display: inline-block;">
+                    <img src="img/us.jpg" alt="My wife and I" width="266" height="205" />
+                    <div id="captions" style="margin: auto;">
+                        <p>My wife Holly and I</p>
+                        <p>and our babies.</p>
+                    </div>
+                    <img src="img/babies.jpg" alt="Our babies" width="266" height="205" />
+                </div>
+
+                <div id="aboutMe" style="margin-left: 100px; width: 675px; display: inline-block; vertical-align: top;">
+                    <h4>Hi, my name is Chase, and I'm a computer scientist.</h4>
+                    <p>I'm 24 years old and currently attending Arizona State University for a Master's of Computer Science degree. I achieved my Bachelor's degree in 2019 <em>cum laude</em> at CSU Sacramento. I love everything to do with computers, from fixing them for family members, to learning how they work at both highest and simplest levels. My favorite subject has to be computer organization and architecture, but I'm also extremely interested in GPU computing and computing theory. In fact, I like computer organization so much I accepted a position at CSUS as a grader and tutor for the intro and graduate computer organization classes, and enrolled in the advanced class.</p>
+                    
+                    <p>Some of my favorite projects to-date were making the board game Battleship on an Arduino, programming a chess game in ARM Assembly on a Raspberry Pi Zero, and modeling a 16 bit MIPS-like CPU in Verilog HDL. I'm also currently working on making a spiritual successor to <em>Diablo</em>, developed by Blizzard North, in the Unity3D Engine making all my own assets and scripts.</p>
+                    
+                    <p>I enjoy spending time with my family, playing games, and working on hobby projects.</p>
+                </div>
+            </div>
+
+            <div id="tab2" class="tabcontent primaryTabContent">
+                <h3>Under construction...</h3>
+                <p>This page is not yet finished.</p>
+            </div>
+            
+            <div id="tab3" class="tabcontent primaryTabContent">
+                <h3>Under construction...</h3>
+                <p>This page is not yet finished.</p>
+            </div>
+
+            <div id="tab4" class="tabcontent primaryTabContent">
+                <h3>Contact me!</h3>
+                <p>Say 'Hi' or contact me at <a href="mailto:chasedjones88@gmail.com">chasedjones88@gmail.com</a></p>
+            </div>
+        </div>
+	</body>
+	
+	<script>
+		onFinishedLoad();
+	</script>
+</html> 

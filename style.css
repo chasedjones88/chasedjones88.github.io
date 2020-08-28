@@ -1,0 +1,118 @@
+html, body {
+    margin: 0px;
+    height: 100%;
+    font-family: Lato, sans-serif;
+    line-height: 1.75;
+    font-size: 14px;
+}
+
+header {
+    height: 320px;
+    min-width: 650px;
+    position: fixed;
+    width: 100% !important;
+    max-width: 100% !important; 
+    background-color: #1d2b3b;
+    background-image: url('img/banner.png');
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+    line-height: 1;
+}
+
+#headerOverlay {
+    height: 100%;
+    width: 100%;
+    background-color: #0003;
+}
+
+#headerText {
+    vertical-align: center;
+    position: absolute;
+    font-size: 96px;
+    color: white;
+    padding: 0 25px;
+    text-shadow: #000 0 0 15px;
+    margin-top: 15px;
+}
+
+#content {
+    position: relative;
+    width: 1280px;
+    margin: auto;
+}
+
+header + #content {
+    padding-top: 320px;
+}
+
+/* Style the tab */
+.primaryTabContainer, .tabContainer {
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Style the buttons inside the tab */
+.primaryTabContainer button, .tabContainer button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 14px 40px;
+  transition: 0.1s;
+  font-size: 16px;
+  font-weight: Semi-bold;
+  margin: auto;
+}
+
+.primaryTabContainer .spacer, .tabContainer .spacer {
+    float: left;
+    height: 10px;
+    width: 145px;
+}
+
+/* Change background color of buttons on hover */
+.primaryTabContainer button:hover {
+  color: #1d2b3b;
+}
+
+/* Create an active/current tablink class */
+.primaryTabContainer button.activeTab {
+}
+
+.primaryTabHR {
+    margin-top: -4px;
+}
+
+/* Change background color of buttons on hover */
+.tabContainer button:hover {
+  color: #1d2b3b;
+}
+
+/* Create an active/current tablink class */
+.tabContainer button.activeTab {
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border-top: none;
+  padding: 10px 100px;
+  transition: 0.3s;
+}
+
+.rectangle {
+    background: #1d2b3b;
+    border-radius: 2px;
+    border: 1.5px solid #1d2b3b;
+    margin-top: 40px;
+    position: absolute;
+}
+
+a {
+    color: #1d2b3b;
+}
